@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import oit.is.microsoft.apple.model.Room;
+
 /**
  * /sample3へのリクエストを扱うクラス authenticateの設定をしていれば， /sample3へのアクセスはすべて認証が必要になる
  */
@@ -45,11 +47,32 @@ public class Sample31Controller {
     return "sample31.html";
   }
 
-
   @PostMapping("step6")
   public String sample36(@RequestParam Integer hiku1, @RequestParam Integer hiku2, ModelMap model) {
     int kekka = hiku1 - hiku2;
     model.addAttribute("hikukekka", kekka);
     return "sample33.html";
+  }
+
+  @Autowired
+  private Room room;
+
+  @GetMapping("step8")
+  public String sample38(Principal prin, ModelMap model) {
+    String loginUser = prin.getName();
+    this.room.addUser(loginUser);
+    model.addAttribute("room", this.room);
+
+    return "sample37.html";
+  }
+
+  @GetMapping("step9")
+  public String sample39(Principal prin, ModelMap model) {
+    String loginUser = prin.getName();
+    Room newRoom = new Room();
+    newRoom.addUser(loginUser);
+    model.addAttribute("new_room", newRoom);
+
+    return "sample37.html";
   }
 }
